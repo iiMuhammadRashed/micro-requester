@@ -124,13 +124,13 @@ All defaults production-ready:
 
 ## Support
 
-- **Issues:** [GitHub Issues](https://github.com/iiMuhammadRashed/microrequest/issues)
-- **Repository:** [GitHub](https://github.com/iiMuhammadRashed/microrequest)
+- **Issues:** [GitHub Issues](https://github.com/iiMuhammadRashed/micro-requester/issues)
+- **Repository:** [GitHub](https://github.com/iiMuhammadRashed/micro-requester)
 - **Documentation:** [README.md](./README.md)
 
 ## Security
 
-If you discover a security vulnerability, please open an issue on [GitHub Issues](https://github.com/iiMuhammadRashed/microrequest/issues/security).
+If you discover a security vulnerability, please open an issue on [GitHub Issues](https://github.com/iiMuhammadRashed/micro-requester/issues/security).
 
 ## License
 

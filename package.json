@@ -1,5 +1,5 @@
 {
-  "name": "microrequest",
+  "name": "micro-requester",
   "version": "0.1.0",
   "description": "Production-ready TypeScript package for standardized service-to-service HTTP calls in NestJS microservices",
   "license": "MIT",
@@ -18,11 +18,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/iiMuhammadRashed/microrequest"
+    "url": "https://github.com/iiMuhammadRashed/micro-requester"
   },
-  "homepage": "https://github.com/iiMuhammadRashed/microrequest#readme",
+  "homepage": "https://github.com/iiMuhammadRashed/micro-requester#readme",
   "bugs": {
-    "url": "https://github.com/iiMuhammadRashed/microrequest/issues"
+    "url": "https://github.com/iiMuhammadRashed/micro-requester/issues"
   },
   "engines": {
     "node": ">=18.0.0"

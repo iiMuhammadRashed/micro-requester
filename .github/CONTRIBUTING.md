@@ -1,6 +1,6 @@
-# Contributing to microrequest
+# Contributing to micro-requester
 
-First of all, thank you for considering contributing to `microrequest`! It's people like you that make this package such a great tool.
+First of all, thank you for considering contributing to `micro-requester`! It's people like you that make this package such a great tool.
 
 ## Code of Conduct
 
@@ -10,7 +10,7 @@ Be respectful, inclusive, and professional. We're all here to make this better t
 
 ### Reporting Bugs
 
-Before creating bug reports, please check the [issue list](https://github.com/iiMuhammadRashed/microrequest/issues) as you might find out that you don't need to create one.
+Before creating bug reports, please check the [issue list](https://github.com/iiMuhammadRashed/micro-requester/issues) as you might find out that you don't need to create one.
 
 **When creating a bug report, include:**
 
@@ -18,7 +18,7 @@ Before creating bug reports, please check the [issue list](https://github.com/ii
 - **Exact steps to reproduce** (with code sample if possible)
 - **Expected behavior** vs. **actual behavior**
 - **Node.js version** (`node --version`)
-- **Package version** (`npm ls microrequest`)
+- **Package version** (`npm ls micro-requester`)
 - **Environment** (OS, runtime)
 
 ```markdown
@@ -36,7 +36,7 @@ What should happen instead?
 
 **Environment**
 - Node.js: 18.12.0
-- microrequest: 0.1.0
+- micro-requester: 0.1.0
 - OS: macOS
 ```
 
@@ -107,8 +107,8 @@ chore: update dependencies
 
 ```bash
 # Clone your fork
-git clone https://github.com/your-username/microrequest.git
-cd microrequest
+git clone https://github.com/your-username/micro-requester.git
+cd micro-requester
 
 # Install dependencies
 npm install
@@ -224,9 +224,9 @@ git push origin --tags
 ## Questions?
 
 - **Documentation**: Check [README.md](../README.md)
-- **Issues**: Search [existing issues](https://github.com/iiMuhammadRashed/microrequest/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/iiMuhammadRashed/microrequest/discussions)
+- **Issues**: Search [existing issues](https://github.com/iiMuhammadRashed/micro-requester/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/iiMuhammadRashed/micro-requester/discussions)
 
 ---
 
-**Thank you for making microrequest better!** ❤️
+**Thank you for making micro-requester better!** ❤️

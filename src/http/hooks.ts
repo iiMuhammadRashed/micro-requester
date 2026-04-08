@@ -20,7 +20,7 @@ export function safeRunHook(
     const errorMsg =
       err instanceof Error ? err.message : String(err);
     logger?.warn(
-      `[microrequest] hook "${hookName}" threw and was suppressed`,
+      `[micro-requester] hook "${hookName}" threw and was suppressed`,
       {
         error: errorMsg,
       }

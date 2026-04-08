@@ -1,11 +1,11 @@
-# microrequest
+# micro-requester
 
 > 🚀 **Enterprise-grade HTTP client for microservices**. Built for speed, reliability, and simplicity in service-to-service communication.
 
 <div align="center">
 
-[![npm version](https://img.shields.io/npm/v/microrequest?style=flat-square&colorA=000000&colorB=24C881)](https://www.npmjs.com/package/microrequest)
-[![npm downloads](https://img.shields.io/npm/dm/microrequest?style=flat-square&colorA=000000&colorB=24C881)](https://www.npmjs.com/package/microrequest)
+[![npm version](https://img.shields.io/npm/v/micro-requester?style=flat-square&colorA=000000&colorB=24C881)](https://www.npmjs.com/package/micro-requester)
+[![npm downloads](https://img.shields.io/npm/dm/micro-requester?style=flat-square&colorA=000000&colorB=24C881)](https://www.npmjs.com/package/micro-requester)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square&colorA=000000&colorB=24C881)](./LICENSE)
 [![Node.js version](https://img.shields.io/badge/node-%3E%3D18-24C881?style=flat-square)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/typescript-5.3%2B-3178c6?style=flat-square)](https://www.typescriptlang.org/)
@@ -16,9 +16,9 @@
 
 ---
 
-## Why microrequest?
+## Why micro-requester?
 
-Modern microservices need reliable HTTP communication with **automatic recovery from transient failures**. Most HTTP clients are bloated or incomplete. `microrequest` is **laser-focused**:
+Modern microservices need reliable HTTP communication with **automatic recovery from transient failures**. Most HTTP clients are bloated or incomplete. `micro-requester` is **laser-focused**:
 
 - ✅ **Smart retries** — exponential backoff that actually works
 - ✅ **Request correlation** — trace requests across services
@@ -51,16 +51,16 @@ Choose your package manager:
 
 ```bash
 # npm
-npm install microrequest
+npm install micro-requester
 
 # yarn
-yarn add microrequest
+yarn add micro-requester
 
 # pnpm
-pnpm add microrequest
+pnpm add micro-requester
 
 # bun
-bun add microrequest
+bun add micro-requester
 ```
 
 **Requirements:** Node.js 18+ • TypeScript 5.0+
@@ -72,7 +72,7 @@ bun add microrequest
 ### Basic Usage
 
 ```typescript
-import { createClient } from 'microrequest';
+import { createClient } from 'micro-requester';
 
 // Create a client for a service
 const userService = createClient({
@@ -90,7 +90,7 @@ const newUser = await userService.post('/users', {
 ### With Error Handling
 
 ```typescript
-import { createClient } from 'microrequest';
+import { createClient } from 'micro-requester';
 
 const api = createClient({
   service: 'users',
@@ -117,7 +117,7 @@ try {
 
 ```typescript
 import { Injectable } from '@nestjs/common';
-import { createClient } from 'microrequest';
+import { createClient } from 'micro-requester';
 import { requestContext } from './request-context.middleware';
 
 @Injectable()
@@ -147,7 +147,7 @@ export class UsersClient {
 Create a client with `createClient()`:
 
 ```typescript
-import { createClient, DEFAULT_RETRY_POLICY } from 'microrequest';
+import { createClient, DEFAULT_RETRY_POLICY } from 'micro-requester';
 
 const client = createClient({
   // Required
@@ -424,7 +424,7 @@ export class AppModule implements NestModule {
 ```typescript
 // services/users.client.ts
 import { Injectable, Logger } from '@nestjs/common';
-import { createClient } from 'microrequest';
+import { createClient } from 'micro-requester';
 import { requestContext } from '../request-context.middleware';
 
 @Injectable()
@@ -481,7 +481,7 @@ export class UsersController {
 }
 ```
 
-Request IDs automatically flow from incoming request → `microrequest` outgoing request ✨
+Request IDs automatically flow from incoming request → `micro-requester` outgoing request ✨
 
 ---
 
@@ -543,7 +543,7 @@ req<T>(input: ReqInput): Promise<T>
 
 ## Performance
 
-`microrequest` is **built for speed**:
+`micro-requester` is **built for speed**:
 
 - **Zero dependencies** (except `undici`) — minimal bundle impact
 - **Lazy-loaded** — NestJS and exceptions only loaded if needed
@@ -567,7 +567,7 @@ GET with logging:    1.5ms (minimal overhead)
 ### API Gateway Pattern
 
 ```typescript
-import { createClient } from 'microrequest';
+import { createClient } from 'micro-requester';
 
 export const createServiceClients = (config: ServiceConfig) => ({
   users: createClient({ service: 'users', base: config.usersUrl }),
@@ -701,7 +701,7 @@ See [CHANGELOG.md](./CHANGELOG.md) for v0.2 roadmap.
 
 ## Security
 
-If you discover a security vulnerability, please report it privately by opening an issue on [GitHub Issues](https://github.com/iiMuhammadRashed/microrequest/issues/security) marked as security.
+If you discover a security vulnerability, please report it privately by opening an issue on [GitHub Issues](https://github.com/iiMuhammadRashed/micro-requester/issues/security) marked as security.
 
 ---
 
@@ -715,9 +715,9 @@ See [LICENSE](./LICENSE) for details.
 
 ## Links
 
-- 📦 [npm Package](https://www.npmjs.com/package/microrequest)
-- 🐙 [GitHub Repository](https://github.com/iiMuhammadRashed/microrequest)
-- 📋 [Issue Tracker](https://github.com/iiMuhammadRashed/microrequest/issues)
+- 📦 [npm Package](https://www.npmjs.com/package/micro-requester)
+- 🐙 [GitHub Repository](https://github.com/iiMuhammadRashed/micro-requester)
+- 📋 [Issue Tracker](https://github.com/iiMuhammadRashed/micro-requester/issues)
 - 📖 [Changelog](./CHANGELOG.md)
 
 ---

@@ -4,7 +4,7 @@
 
 **Do not open GitHub issues for security vulnerabilities.**
 
-If you discover a security vulnerability in `microrequest`, please report it responsibly by emailing:
+If you discover a security vulnerability in `micro-requester`, please report it responsibly by emailing:
 
 📧 **[iimuhammad.rashed@gmail.com](mailto:iimuhammad.rashed@gmail.com)**
 
@@ -31,7 +31,7 @@ We'll acknowledge your report within 48 hours and work with you on a fix.
 
 ### What to Avoid
 
-❌ Don't use `microrequest` for sensitive data without TLS
+❌ Don't use `micro-requester` for sensitive data without TLS
 ❌ Don't hardcode credentials in client config
 ❌ Don't ignore SSL/TLS certificate errors
 
@@ -137,7 +137,7 @@ try {
 
 ### Current Version
 
-**microrequest@0.1.0** is a new release. No known vulnerabilities.
+**micro-requester@0.1.0** is a new release. No known vulnerabilities.
 
 ### Versions
 
@@ -151,9 +151,9 @@ try {
 ## Contact
 
 - **Security Issues**: [iimuhammad.rashed@gmail.com](mailto:iimuhammad.rashed@gmail.com)
-- **General Questions**: [GitHub Issues](https://github.com/iiMuhammadRashed/microrequest/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/iiMuhammadRashed/microrequest/discussions)
+- **General Questions**: [GitHub Issues](https://github.com/iiMuhammadRashed/micro-requester/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/iiMuhammadRashed/micro-requester/discussions)
 
 ---
 
-**Thank you for helping keep microrequest secure.** 🔒
+**Thank you for helping keep micro-requester secure.** 🔒
