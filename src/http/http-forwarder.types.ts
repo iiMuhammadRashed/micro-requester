@@ -1,25 +1,61 @@
 /**
  * HTTP request input configuration
+ *
+ * This shape is used by `client.req()` for full control, and by convenience methods
+ * (`get`, `post`, etc.) through `opts`.
  */
 export interface ReqInput {
-  /** HTTP method */
+  /**
+   * HTTP method used for the request.
+   *
+   * Retries are only attempted for methods configured as retryable in `RetryPolicy`
+   * (defaults are idempotent methods).
+   */
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD' | 'OPTIONS';
-  /** URL path (relative to client base URL) */
+  /**
+   * URL path relative to client `base`.
+   *
+   * Examples: `/users`, `users/123`, `/v1/orders`.
+   */
   path: string;
-  /** Query string parameters */
+  /**
+   * Optional query string parameters.
+   *
+   * `undefined` values are ignored.
+   */
   query?: Record<string, string | number | boolean | undefined>;
-  /** Custom headers (merged with client defaults) */
+  /**
+   * Per-request headers.
+   *
+   * Merged over `defaultHeaders` so request-level values win on conflicts.
+   */
   headers?: Record<string, string>;
-  /** Request body (for methods that support it) */
+  /**
+   * Request body.
+   *
+   * If the value is not a string, it is serialized as JSON.
+   * If `content-type` is missing in merged headers, `application/json` is added automatically.
+   */
   body?: unknown;
-  /** Request timeout in milliseconds (overrides client default) */
+  /**
+   * Per-request timeout in milliseconds.
+   *
+   * Overrides `HttpClientOptions.timeoutMs` for this request only.
+   */
   timeoutMs?: number;
-  /** Retry override: false = never retry, number = max retries for this request */
+  /**
+   * Retry override for this request.
+   *
+   * - `false`: disable retries
+   * - `number`: max retries for this request
+   */
   retry?: false | number;
 }
 
 /**
  * Retry policy configuration
+ *
+ * Used to decide if and when retry attempts are executed.
  * @default DEFAULT_RETRY_POLICY
  */
 export interface RetryPolicy {
@@ -39,6 +75,8 @@ export interface RetryPolicy {
 
 /**
  * Lifecycle event payload for hooks
+ *
+ * All durations are measured in milliseconds.
  */
 export interface HookPayload {
   /** Service name from client options */
@@ -61,6 +99,8 @@ export interface HookPayload {
 
 /**
  * Lifecycle hooks - all errors are safely suppressed
+ *
+ * Hook exceptions never break request execution; they are swallowed by the client.
  */
 export interface HttpClientHooks {
   /** Called before first attempt */
@@ -87,6 +127,8 @@ export interface HttpClientLogger {
 
 /**
  * HTTP client initialization options
+ *
+ * Create a single client instance per upstream service and reuse it.
  */
 export interface HttpClientOptions {
   /** Service name (used in logs and error metadata) */
@@ -111,9 +153,13 @@ export interface HttpClientOptions {
 
 /**
  * Public HTTP client interface
+ *
+ * Use convenience methods for common verbs, or `req` for full control.
  */
 export interface HttpClient {
-  /** Generic request with full control */
+  /**
+   * Generic request with full control over all fields.
+   */
   req<T = unknown>(input: ReqInput): Promise<T>;
   /** GET request */
   get<T = unknown>(
@@ -137,6 +183,16 @@ export interface HttpClient {
   ): Promise<T>;
   /** DELETE request */
   delete<T = unknown>(
+    path: string,
+    opts?: Omit<ReqInput, 'method' | 'path'>
+  ): Promise<T>;
+  /** HEAD request */
+  head<T = unknown>(
+    path: string,
+    opts?: Omit<ReqInput, 'method' | 'path'>
+  ): Promise<T>;
+  /** OPTIONS request */
+  options<T = unknown>(
     path: string,
     opts?: Omit<ReqInput, 'method' | 'path'>
   ): Promise<T>;

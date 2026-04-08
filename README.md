@@ -203,6 +203,12 @@ await client.patch(`/users/${id}`, { body: { status: 'active' } });
 
 // DELETE
 await client.delete(`/users/${id}`);
+
+// HEAD
+await client.head('/users/123');
+
+// OPTIONS
+const capabilities = await client.options('/users');
 ```
 
 #### Full Control with `req()`
@@ -218,6 +224,13 @@ const result = await client.req({
   retry: 1,           // Override retry count
 });
 ```
+
+#### Dynamic Request Behavior
+
+- Request body objects are automatically JSON-serialized.
+- If body is an object and `content-type` is missing, `application/json` is set automatically.
+- A single request ID is generated per request lifecycle and reused across retries and hooks.
+- Upstream `4xx` responses are passed through (not remapped to `502`).
 
 ### Retry Logic
 

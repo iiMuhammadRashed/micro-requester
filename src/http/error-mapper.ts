@@ -135,7 +135,13 @@ function getStatusForTransportError(
   if (errorCode === 'ECONNREFUSED') {
     return 503; // Service Unavailable
   }
-  if (errorCode === 'ETIMEDOUT' || errorCode === 'UND_ERR_CONNECT_TIMEOUT') {
+  if (
+    errorCode === 'ETIMEDOUT' ||
+    errorCode === 'UND_ERR_CONNECT_TIMEOUT' ||
+    errorCode === 'UND_ERR_HEADERS_TIMEOUT' ||
+    errorCode === 'UND_ERR_BODY_TIMEOUT' ||
+    errorCode === 'UND_ERR_REQUEST_TIMEOUT'
+  ) {
     return 504; // Gateway Timeout
   }
   if (errorCode === 'ENOTFOUND') {

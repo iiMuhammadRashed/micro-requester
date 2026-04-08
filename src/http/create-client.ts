@@ -41,6 +41,17 @@ interface RequestResult {
 
 /**
  * Create an HTTP client for service-to-service communication
+ *
+ * Features:
+ * - Per-service reusable client instance
+ * - Automatic correlation header injection
+ * - Configurable retries with exponential backoff
+ * - Timeout handling via AbortController
+ * - Upstream and transport error normalization
+ * - Optional lifecycle hooks and structured logging
+ *
+ * @param options - Client configuration such as service name, base URL, retries, hooks, and logger
+ * @returns An `HttpClient` instance with `req` and convenience HTTP methods
  */
 export function createClient(options: HttpClientOptions): HttpClient {
   // Apply defaults
@@ -53,13 +64,19 @@ export function createClient(options: HttpClientOptions): HttpClient {
 
   /**
    * Execute a single request attempt
+    *
+    * This function performs one network call only. Retry orchestration is done by `req`.
+    *
+    * @param input - Request input
+    * @param attempt - Zero-based attempt index
+    * @param requestId - Correlation ID for the full request lifecycle
    */
   async function executeRequest(
     input: ReqInput,
-    attempt: number
+    attempt: number,
+    requestId: string
   ): Promise<RequestResult> {
     const startTime = performance.now();
-    const requestId = resolveRequestId(resolved.getReqId);
     const timeoutMs = input.timeoutMs ?? resolved.timeoutMs;
 
     const payload = {
@@ -92,7 +109,30 @@ export function createClient(options: HttpClientOptions): HttpClient {
         ...resolved.defaultHeaders,
         ...input.headers,
       };
+
+      // If body is JSON-like and content-type is not set, default to JSON.
+      const hasContentType = Object.keys(headers).some(
+        (key) => key.toLowerCase() === 'content-type'
+      );
+      if (
+        input.body !== undefined &&
+        typeof input.body !== 'string' &&
+        !hasContentType
+      ) {
+        headers['content-type'] = 'application/json';
+      }
+
       headers = injectCorrelationHeader(headers, requestId);
+
+      resolved.logger?.info('[micro-requester] outbound request', {
+        service: resolved.service,
+        method: input.method,
+        path: input.path,
+        requestId,
+        attempt,
+        timeoutMs,
+        headers: sanitizeHeaders(headers),
+      });
 
       // Create abort controller for timeout
       const abortController = new AbortController();
@@ -163,8 +203,16 @@ export function createClient(options: HttpClientOptions): HttpClient {
       const durationMs = performance.now() - startTime;
       payload.durationMs = durationMs;
 
-      if (err instanceof Error && err.message === 'AbortError') {
-        throw mapTransportError(new Error('Request timeout'), {
+      // Upstream/transport errors already mapped in this client should pass through unchanged.
+      const mappedStatus = (err as any)?.response?.statusCode;
+      if (typeof mappedStatus === 'number') {
+        throw err;
+      }
+
+      if (err instanceof Error && err.name === 'AbortError') {
+        const timeoutErr = new Error('Request timeout') as NodeJS.ErrnoException;
+        timeoutErr.code = 'ETIMEDOUT';
+        throw mapTransportError(timeoutErr, {
           ...payload,
         });
       }
@@ -191,6 +239,13 @@ export function createClient(options: HttpClientOptions): HttpClient {
 
   /**
    * Core request method with retry loop
+    *
+    * Flow:
+    * 1. Emit start hook
+    * 2. Execute attempt
+    * 3. On retryable failure, emit retry hook and back off
+    * 4. On success, emit success hook and return body
+    * 5. On final failure, emit failure hook and throw
    */
   async function req<T = unknown>(input: ReqInput): Promise<T> {
     const requestId = resolveRequestId(resolved.getReqId);
@@ -218,7 +273,7 @@ export function createClient(options: HttpClientOptions): HttpClient {
       const startTime = performance.now();
 
       try {
-        const result = await executeRequest(input, attempt);
+        const result = await executeRequest(input, attempt, requestId);
         const durationMs = performance.now() - startTime;
 
         emitRequestSuccess(resolved.hooks, resolved.logger, {
@@ -313,6 +368,20 @@ export function createClient(options: HttpClientOptions): HttpClient {
       opts?: Omit<ReqInput, 'method' | 'path'>
     ): Promise<T> {
       return req({ ...opts, method: 'DELETE', path });
+    },
+
+    head<T = unknown>(
+      path: string,
+      opts?: Omit<ReqInput, 'method' | 'path'>
+    ): Promise<T> {
+      return req({ ...opts, method: 'HEAD', path });
+    },
+
+    options<T = unknown>(
+      path: string,
+      opts?: Omit<ReqInput, 'method' | 'path'>
+    ): Promise<T> {
+      return req({ ...opts, method: 'OPTIONS', path });
     },
   };
 

@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-04-08
+
+### ✨ Improved
+
+- Preserved upstream 4xx pass-through behavior by preventing double error remapping in request execution.
+- Improved timeout classification to use AbortError semantics consistently.
+- Expanded undici timeout code mapping for more accurate 504 Gateway Timeout responses.
+- Added automatic application/json content-type when request body is JSON-like and header is not provided.
+- Unified request ID usage across request lifecycle (hooks, retries, and outbound headers).
+- Added sanitized outbound header logging for safer observability metadata.
+
+### ➕ Added
+
+- New convenience methods: head() and options().
+- Expanded JSDoc documentation across public types and core request flow.
+- README updates for dynamic request behavior and new method examples.
+
 ## [0.1.0] - 2026-04-08
 
 ### ✨ Added
