@@ -1,0 +1,52 @@
+# Development files
+src/
+*.ts
+!*.d.ts
+
+# Configuration
+tsconfig*.json
+.eslintrc*
+.prettierrc*
+.editorconfig
+
+# Build artifacts
+*.map
+.tsc-out/
+
+# Version control
+.git
+.gitignore
+.github/
+
+# Package manager
+node_modules/
+npm-debug.log
+.npmrc
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+test/
+__tests__/
+*.spec.ts
+*.test.ts
+jest.config.js
+vitest.config.ts
+
+# Documentation
+docs/
+.md
+!README.md
+!CHANGELOG.md
+
+# CI/CD
+.github/workflows/
+.gitlab-ci.yml
+.travis.yml
+azure-pipelines.yml

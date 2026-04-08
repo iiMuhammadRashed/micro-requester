@@ -1,0 +1,75 @@
+{
+  "name": "microrequest",
+  "version": "0.1.0",
+  "description": "Production-ready TypeScript package for standardized service-to-service HTTP calls in NestJS microservices",
+  "license": "MIT",
+  "author": "Muhammad Rashed <iimuhammad.rashed@gmail.com>",
+  "keywords": [
+    "http",
+    "client",
+    "microservices",
+    "nestjs",
+    "typescript",
+    "retry",
+    "correlation",
+    "request-id",
+    "undici",
+    "service-to-service"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iiMuhammadRashed/microrequest"
+  },
+  "homepage": "https://github.com/iiMuhammadRashed/microrequest#readme",
+  "bugs": {
+    "url": "https://github.com/iiMuhammadRashed/microrequest/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "sideEffects": false,
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run build:types",
+    "build:esm": "tsc --project tsconfig.build.json --outDir dist/esm --declaration false",
+    "build:cjs": "tsc --project tsconfig.cjs.json --declaration false",
+    "build:types": "tsc --project tsconfig.types.json",
+    "typecheck": "tsc --noEmit --strict",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run typecheck && npm run build"
+  },
+  "dependencies": {
+    "undici": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "@nestjs/common": ">=9.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@nestjs/common": {
+      "optional": true
+    }
+  }
+}

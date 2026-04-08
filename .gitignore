@@ -1,0 +1,60 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.npmrc
+
+# Build output
+dist/
+build/
+.tsc-out/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-workspace
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Cache
+.eslintcache
+.cache
+.parcel-cache
+
+# OS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Test coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# Temporary
+tmp/
+temp/
+*.bak

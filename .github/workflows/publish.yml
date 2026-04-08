@@ -1,0 +1,72 @@
+name: Publish to npm
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      packages: write
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Verify version matches tag
+        run: |
+          TAG=${{ github.ref }}
+          VERSION="v$(jq -r '.version' package.json)"
+          if [ "$TAG" != "refs/tags/$VERSION" ]; then
+            echo "Tag $TAG does not match package version $VERSION"
+            exit 1
+          fi
+          echo "✓ Version matches tag: $VERSION"
+      
+      - name: Run typecheck
+        run: npm run typecheck
+      
+      - name: Build package
+        run: npm run build
+      
+      - name: Verify build artifacts
+        run: |
+          test -d dist/esm || exit 1
+          test -d dist/cjs || exit 1
+          test -d dist/types || exit 1
+          echo "✓ Build verification passed"
+      
+      - name: Configure npm registry
+        run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+      
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            README.md
+            CHANGELOG.md
+            LICENSE
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

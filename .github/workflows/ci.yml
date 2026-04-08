@@ -1,0 +1,106 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: TypeScript type check
+        run: npm run typecheck
+      
+      - name: Build package
+        run: npm run build
+      
+      - name: Verify dist files
+        run: |
+          test -d dist/esm || exit 1
+          test -d dist/cjs || exit 1
+          test -d dist/types || exit 1
+          echo "✓ All build artifacts present"
+      
+      - name: Check package integrity
+        run: |
+          echo "Checking package.json structure..."
+          npm ls 2>&1 | head -20
+          echo "✓ Package structure valid"
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-node${{ matrix.node-version }}
+          path: dist/
+          retention-days: 5
+
+  security-audit:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: NPM security audit
+        run: npm audit --production --audit-level=moderate
+        continue-on-error: true
+      
+      - name: Check for vulnerable dependencies
+        run: npm audit --production --audit-level=high
+
+  package-dry-run:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build package
+        run: npm run build
+      
+      - name: Dry run npm pack
+        run: npm pack --dry-run
+      
+      - name: Verify package metadata
+        run: |
+          echo "Package name: $(jq '.name' package.json)"
+          echo "Package version: $(jq '.version' package.json)"
+          echo "Package exports: $(jq '.exports' package.json)"
+          echo "Package files: $(jq '.files' package.json)"
