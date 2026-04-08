@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-04-08
+
+### 💥 Changed
+
+- Rewrote package to a minimal architecture centered on one core function: `createClient()`.
+- Reduced source surface to three files: `src/index.ts`, `src/client.ts`, and `src/errors.ts`.
+
+### 🧹 Removed
+
+- Removed previous `src/http/*` and `src/utils/*` implementation layers.
+- Removed extra abstractions not required for core microservice HTTP use case.
+
+### ✅ Result
+
+- Smaller, easier-to-read package focused on main problem only.
+- Keeps retry, timeout, upstream 4xx pass-through, and transport error mapping.
+
+## [0.2.0] - 2026-04-08
+
+### 💥 Changed
+
+- Simplified package architecture around a single primary entry point: `createClient()`.
+- Consolidated retry, URL join, correlation header injection, hook dispatch, and backoff helpers into `create-client.ts` to reduce indirection.
+
+### 🧹 Removed
+
+- Removed package-provided request context/middleware helpers (`requestContextMiddleware`, `getRequestId`, `runWithRequestContext`).
+- Removed `createAutoClient()` to avoid multiple integration paths.
+- Removed low-level helper modules no longer needed after consolidation.
+
+### ✅ Result
+
+- Fewer files, less code surface, and project-owned middleware strategy.
+- Core behavior remains focused on robust HTTP calls, retries, and correct upstream error propagation.
+
 ## [0.1.4] - 2026-04-08
 
 ### ➕ Added
